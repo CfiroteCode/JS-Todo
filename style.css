@@ -34,12 +34,12 @@
 .conrainer{
     display: flex;
 }
-.edit{
+.icon{
     display: none;
     
 }
 
-.card:hover .edit{
+.card:hover .icon{
     animation: fadein 1s;
     display: block;
     position: absolute;
