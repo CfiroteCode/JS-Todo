@@ -41,13 +41,13 @@ $(document).ready(function () {
         }
 
         var task = {
-            id:'task-' + (saves.length + 1),
-            titre : titre["0"].value.trim(),
-            description : textdescrip,
-            begin : beginDate,
-            end : endinDate,
-            matter : importance,
-            done : false
+            id: 'task-' + (saves.length + 1),
+            titre: titre["0"].value.trim(),
+            description: textdescrip,
+            begin: beginDate,
+            end: endinDate,
+            matter: importance,
+            done: false
         }
 
         saves.push(task);
@@ -58,33 +58,70 @@ $(document).ready(function () {
         tasksPlace.append(taskToHTML(task));
     }
 
-    function savesChange(){
-        saves.forEach(function(task){
+    function savesChange() {
+        saves.forEach(function (task) {
             tasksPlace.append(taskToHTML(task));
         })
     }
 
-    function taskToHTML(task){
+    function taskToHTML(task) {
 
         var code;
+        var endHTML = '';
 
-        switch(task.matter){
+        if (task.end != '') {
+            endHTML = "finish : " + task.end;
+        }
+
+        switch (task.matter) {
 
             case 'Low':
-            code = '<div class="card text-white bg-success mb-3" style="max-width: 20rem;"><div class="card-header">Header</div><div class="card-body"><h4 class="card-title">Success card title</h4><p class="card-text">Some quick example text to build on the card title and make up the bulk of the card content.</p></div></div>';
-            break;
+                code = '<div class="card text-white bg-success mb-3" style="max-width: 20rem;"><div class="card-header"><h4 class="card-title">';
+                code += task.titre;
+                code += '</h4></div><div class="card-body"><p class="card-text">';
+                code += task.description;
+                code += '</p><div class="todo-date">start : ';
+                code += task.begin;
+                code += '</div><div class="todo-date">';
+                code += endHTML;
+                code += '</div></div></div>';
+                break;
 
             case 'Medium':
-            code = '<div class="card text-white bg-warning mb-3" style="max-width: 20rem;"><div class="card-header">Header</div><div class="card-body"><h4 class="card-title">Success card title</h4><p class="card-text">Some quick example text to build on the card title and make up the bulk of the card content.</p></div></div>';
-            break;
+                code = '<div class="card text-white bg-warning mb-3" style="max-width: 20rem;"><div class="card-header"><h4 class="card-title"> ';
+                code += task.titre;
+                code += '</h4></div><div class="card-body"><p class="card-text">';
+                code += task.description;
+                code += '</p><div class="todo-date">start : ';
+                code += task.begin;
+                code += '</div><div class="todo-date">';
+                code += endHTML;
+                code += '</div></div></div>';
+                break;
 
             case 'High':
-            code = '<div class="card text-white bg-danger mb-3" style="max-width: 20rem;"><div class="card-header">Header</div><div class="card-body"><h4 class="card-title">Success card title</h4><p class="card-text">Some quick example text to build on the card title and make up the bulk of the card content.</p></div></div>';
-            break;
+                code = '<div class="card text-white bg-danger mb-3" style="max-width: 20rem;"><div class="card-header"><h4 class="card-title">';
+                code += task.titre;
+                code += '</h4></div><div class="card-body"><p class="card-text">';
+                code += task.description;
+                code += '</p><div class="todo-date">start : ';
+                code += task.begin;
+                code += '</div><div class="todo-date">';
+                code += endHTML;
+                code += '</div></div></div>';
+                break;
 
             case '':
-            code = '<div class="card text-white bg-warning mb-3" style="max-width: 20rem;"><div class="card-header">Header</div><div class="card-body"><h4 class="card-title">Success card title</h4><p class="card-text">Some quick example text to build on the card title and make up the bulk of the card content.</p></div></div>';
-            break;
+                code = '<div class="card text-white bg-warning mb-3" style="max-width: 20rem;"><div class="card-header"><h4 class="card-title">';
+                code += task.titre;
+                code += '</h4></div><div class="card-body"><p class="card-text">';
+                code += task.description;
+                code += '</p><div class="todo-date">start : ';
+                code += task.begin;
+                code += '</div><div class="todo-date">';
+                code += endHTML;
+                code += '</div></div></div>';
+                break;
         }
         return code;
     }

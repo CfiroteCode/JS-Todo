@@ -13,6 +13,9 @@
 }
 
 .card{
+    margin: 0 auto; /* Added */
+    float: none; /* Added */
+    width: 300px;
     margin-top: 20px;
     text-align: center;
 }
@@ -28,7 +31,4 @@
 }
 .conrainer{
     display: flex;
-}
-.card{
-    align-content: space-between;
 }
