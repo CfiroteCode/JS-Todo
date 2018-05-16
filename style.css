@@ -13,11 +13,13 @@
 }
 
 .card{
-    margin: 0 auto; /* Added */
-    float: none; /* Added */
+    animation: fadein .5s;
+    margin: 0 auto; 
+    float: none; 
     width: 300px;
     margin-top: 20px;
     text-align: center;
+    position: relative
 }
 .large{
     display: block;
@@ -31,4 +33,25 @@
 }
 .conrainer{
     display: flex;
+}
+.edit{
+    display: none;
+    
+}
+
+.card:hover .edit{
+    animation: fadein 1s;
+    display: block;
+    position: absolute;
+    font-size: 1.5em;
+    top: 20px;
+    left: 15px;
+}
+@keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
 }

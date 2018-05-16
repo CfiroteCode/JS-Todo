@@ -18,6 +18,10 @@ $(document).ready(function () {
         verifyInputs();
     })
 
+    tasksPlace.on('click',$('.edit'),function(e){
+        console.log(e);
+    })
+
     function verifyInputs() {
 
         $('.invalid-feedback').css('display', 'none');
@@ -78,7 +82,7 @@ $(document).ready(function () {
             case 'Low':
                 code = '<div class="card text-white bg-success mb-3" style="max-width: 20rem;"><div class="card-header"><h4 class="card-title">';
                 code += task.titre;
-                code += '</h4></div><div class="card-body"><p class="card-text">';
+                code += '</h4><i class="fas fa-pencil-alt edit"></i></div><div class="card-body"><p class="card-text">';
                 code += task.description;
                 code += '</p><div class="todo-date">start : ';
                 code += task.begin;
@@ -90,7 +94,7 @@ $(document).ready(function () {
             case 'Medium':
                 code = '<div class="card text-white bg-warning mb-3" style="max-width: 20rem;"><div class="card-header"><h4 class="card-title"> ';
                 code += task.titre;
-                code += '</h4></div><div class="card-body"><p class="card-text">';
+                code += '</h4><i class="fas fa-pencil-alt edit"></i></div><div class="card-body"><p class="card-text">';
                 code += task.description;
                 code += '</p><div class="todo-date">start : ';
                 code += task.begin;
@@ -102,7 +106,7 @@ $(document).ready(function () {
             case 'High':
                 code = '<div class="card text-white bg-danger mb-3" style="max-width: 20rem;"><div class="card-header"><h4 class="card-title">';
                 code += task.titre;
-                code += '</h4></div><div class="card-body"><p class="card-text">';
+                code += '</h4><i class="fas fa-pencil-alt edit"></i></div><div class="card-body"><p class="card-text">';
                 code += task.description;
                 code += '</p><div class="todo-date">start : ';
                 code += task.begin;
@@ -114,7 +118,7 @@ $(document).ready(function () {
             case '':
                 code = '<div class="card text-white bg-warning mb-3" style="max-width: 20rem;"><div class="card-header"><h4 class="card-title">';
                 code += task.titre;
-                code += '</h4></div><div class="card-body"><p class="card-text">';
+                code += '</h4><i class="fas fa-pencil-alt edit"></i></div><div class="card-body"><p class="card-text">';
                 code += task.description;
                 code += '</p><div class="todo-date">start : ';
                 code += task.begin;
