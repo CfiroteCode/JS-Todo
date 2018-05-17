@@ -19,8 +19,14 @@
     width: 300px;
     margin-top: 20px;
     text-align: center;
-    position: relative
+    position: relative;
+    transition: box-shadow 1s linear;
 }
+
+.card:hover{
+	box-shadow: 5px 5px 10px #bbb;
+}
+
 .large{
     display: block;
     width: 100%;

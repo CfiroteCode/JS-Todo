@@ -45,7 +45,7 @@ $(document).ready(function () {
             }
 
             var textdescrip = description["0"].value.trim();
-            var beginDate = Date.now();
+            var beginDate = '';         
             var endinDate = end["0"].value;
             var importance = '';
 
@@ -136,6 +136,11 @@ $(document).ready(function () {
 
         var code;
         var endHTML = '';
+        var beginHTML = '';
+
+        if(task.begin !=''){
+            beginHTML = "start : " + task.begin;
+        }
 
         if (task.end != '') {
             endHTML = "finish : " + task.end;
@@ -169,8 +174,8 @@ $(document).ready(function () {
         code += task.titre;
         code += '</h4><i class="fas fa-pencil-alt icon"></i></div><div class="card-body"><p class="card-text">';
         code += task.description;
-        code += '</p><div class="todo-date">start : ';
-        code += task.begin;
+        code += '</p><div class="todo-date">';
+        code += beginHTML;
         code += '</div><div class="todo-date">';
         code += endHTML;
         code += '</div></div></div>';
@@ -183,14 +188,24 @@ $(document).ready(function () {
         var card = $(e.target).parent().parent();
         var header = card.find($('.card-header'));
         var body = card.find($('.card-body'));
+        var title = header.find($('.card-title'));
+        var description = body.find($('.card-text'));
 
         editMatter='';
 
-        header.find($('.card-title')).replaceWith('<input type="text" placeholder="Todo Title..." class="todo-title large"><div class="invalid-edit">This task need a title !!</div>');
+        var codeTitle = '<input type="text" value="';
+        codeTitle += title["0"].innerText;
+        codeTitle += '" class="todo-title large"><div class="invalid-edit">This task need a title !!</div>';
+
+        var codeDescription = '<input type="text" value="';
+        codeDescription += description["0"].innerText;
+        codeDescription += '" class="todo-description large"><div class="body-edition"><div>date Begining</div><input type="date" name="begin" class="todo-begin"><div>ending</div><input type="date" name="ending" class="todo-ending"><div>Matter</div><div class="border-black todo-matter"><button type="button" class="btn btn-success low">Low</button><button type="button" class="btn btn-warning medium">Medium</button><button type="button" class="btn btn-danger high">High</button><button type="button" class="btn btn-info btn-lg btn-block todo-save">Save</button></div>';
+
+        header.find($('.card-title')).replaceWith(codeTitle);
 
         header.find($('.icon').css('display', 'none'));
 
-        body.find($('.card-text')).replaceWith('<input type="text" placeholder="Todo Description..." class="todo-description large"><div class="body-edition"><div>date Begining</div><input type="date" name="begin" class="todo-begin"><div>ending</div><input type="date" name="ending" class="todo-ending"><div>Matter</div><div class="border-black todo-matter"><button type="button" class="btn btn-success low">Low</button><button type="button" class="btn btn-warning medium">Medium</button><button type="button" class="btn btn-danger high">High</button><button type="button" class="btn btn-info btn-lg btn-block todo-save">Save</button></div>');
+        body.find($('.card-text')).replaceWith(codeDescription);
 
         body.find($('.todo-date')).replaceWith('<div></div>');
 
@@ -201,6 +216,11 @@ $(document).ready(function () {
 
 
         var endTask = '';
+        var beginTask = '';
+
+        if (event.begin != '') {
+            beginTask = "start : " + event.begin;
+        }
 
         if (event.end != '') {
             endTask = "finish : " + event.end;
@@ -234,14 +254,11 @@ $(document).ready(function () {
         replaceCard += '</h4><i class="fas fa-pencil-alt icon"></i></div>';
         replaceCard += '<div class="card-body"><p class="card-text">';
         replaceCard += event.description;
-        replaceCard += '</p><div class="todo-date">start : ';
-        replaceCard += event.begin;
+        replaceCard += '</p><div class="todo-date">';
+        replaceCard += beginTask;
         replaceCard += '</div><div class="todo-date">';
         replaceCard += endTask;
         replaceCard += '</div></div></div>';
-
-        console.log(replaceCard);
-        console.log(card);
 
         card.replaceWith(replaceCard);
     }
