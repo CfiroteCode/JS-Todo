@@ -15,12 +15,11 @@ $(document).ready(function () {
     })
 
     validate.on('click', function () {
-        verifyInputs(false);
+        verifyInputs(false, event);
     })
 
     tasksPlace.on('click', '.todo-save', function (event) {
 
-        console.log(titre2["0"].value);
         verifyInputs(true, event);
     })
 
@@ -73,9 +72,43 @@ $(document).ready(function () {
 
             var body = $(event.target).parent().parent().parent();
             var titre2 = body.find($('.todo-title'));
-            var invalid = body.find($('.invalid-feedback'));
+            var invalid2 = body.find($('.invalid-edit'));
+            var description2 = body.find($('.todo-description'));
+            var begin2 = body.find($('.todo-begin'));
+            var end2 = body.find($('.todo-ending'));
+            var matter2 = body.find($('.todo-matter'));
+            console.log(titre2["0"].value.trim());
 
-            invalid.css('display', 'none');
+            invalid2.css('display', 'none');
+
+            if (!titre2["0"].value.trim()) {
+
+                body.find($('.invalid-edit')).css('display', 'block');
+                return false;
+            }
+
+            saves.forEach(function (element) {
+
+                if (element.id == body["0"].id) {
+
+                    element.titre = titre2["0"].value.trim();
+                    element.description = description2["0"].value.trim();
+
+                    if (begin["0"].value) {
+                        element.begin = begin2["0"].value();
+                    }
+
+                    if (end2["0"].value()){
+                    element.end = end2["0"].value();
+                }
+
+
+                }
+
+
+                contentEdited(element, body);
+            });
+
         }
     }
 
@@ -129,15 +162,44 @@ $(document).ready(function () {
         var header = card.find($('.card-header'));
         var body = card.find($('.card-body'));
 
-        header.find($('.card-title')).replaceWith('<input type="text" placeholder="Todo Title..." class="todo-title large"><div class="invalid-feedback">This task need a title !!</div>');
+        header.find($('.card-title')).replaceWith('<input type="text" placeholder="Todo Title..." class="todo-title large"><div class="invalid-edit">This task need a title !!</div>');
 
         header.find($('.icon').css('display', 'none'));
 
 
 
-        body.find($('.card-text')).replaceWith('<input type="text" placeholder="Todo Description..." class="todo-description large"><div>date Begining</div><input type="date" name="begin" class="todo-begin"><div>ending</div><input type="date" name="ending" class="todo-ending"><div>Matter</div><div class="border-black todo-matter"><button type="button" class="btn btn-success low">Low</button><button type="button" class="btn btn-warning medium">Medium</button><button type="button" class="btn btn-danger high">High</button><button type="button" class="btn btn-info btn-lg btn-block todo-save">Save</button>');
+        body.find($('.card-text')).replaceWith('<input type="text" placeholder="Todo Description..." class="todo-description large"><div class="body-edition"><div>date Begining</div><input type="date" name="begin" class="todo-begin"><div>ending</div><input type="date" name="ending" class="todo-ending"><div>Matter</div><div class="border-black todo-matter"><button type="button" class="btn btn-success low">Low</button><button type="button" class="btn btn-warning medium">Medium</button><button type="button" class="btn btn-danger high">High</button><button type="button" class="btn btn-info btn-lg btn-block todo-save">Save</button></div>');
 
         body.find($('.todo-date')).replaceWith('<div></div>');
+
+    }
+
+    function contentEdited(event, card) {
+
+        var replaceTitre = '<h4 class="card-title">';
+        replaceTitre += event.titre;
+        replaceTitre += '</h4><i class="fas fa-pencil-alt icon"></i>';
+
+        var endTask = '';
+
+        if (event.end != '') {
+            endTask = "finish : " + event.end;
+        }
+
+        var replaceBody = '<p class="card-text">';
+        replaceBody += event.description;
+        code += '</p><div class="todo-date">start : ';
+        code += event.begin;
+        code += '</div><div class="todo-date">';
+        code += endTask;
+        code += '</div></div></div>';
+
+        card.find($('.todo-title')).replaceWith(replaceTitre);
+
+        card.find($('.todo-description')).replaceWith(replaceBody);
+
+        card.find($('.body-edition')).replaceWith('');
+
 
     }
 

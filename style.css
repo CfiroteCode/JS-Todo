@@ -28,6 +28,10 @@
 .invalid-feedback{
     display: none;
 }
+.invalid-edit{
+    display: none;
+    color: black;
+}
 .todo-save{
     margin-top: 20px;
 }
