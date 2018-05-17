@@ -6,12 +6,18 @@ $(document).ready(function () {
     var end = $('.todo-ending');
     var matter = $('.todo-matter');
     var selectMatter;
+    var editMatter;
     var validate = $('.todo-save');
     var saves = [];
     var tasksPlace = $('.tasks');
+    var colorCard = '';
 
     matter.on('click', $('.button'), function (evt) {
         selectMatter = evt.target.innerText;
+    })
+
+    tasksPlace.on('click', $('.button'), function (evt) {
+        editMatter = evt.target.innerText;
     })
 
     validate.on('click', function () {
@@ -70,14 +76,12 @@ $(document).ready(function () {
 
         } else {
 
-            var body = $(event.target).parent().parent().parent();
+            var body = $(event.target).parent().parent().parent().parent();
             var titre2 = body.find($('.todo-title'));
             var invalid2 = body.find($('.invalid-edit'));
             var description2 = body.find($('.todo-description'));
             var begin2 = body.find($('.todo-begin'));
             var end2 = body.find($('.todo-ending'));
-            var matter2 = body.find($('.todo-matter'));
-            console.log(titre2["0"].value.trim());
 
             invalid2.css('display', 'none');
 
@@ -89,18 +93,28 @@ $(document).ready(function () {
 
             saves.forEach(function (element) {
 
+                if (!editMatter) {
+                    editMatter = element.matter;
+                }else{
+                    element.matter = editMatter;
+                }
+
                 if (element.id == body["0"].id) {
 
                     element.titre = titre2["0"].value.trim();
                     element.description = description2["0"].value.trim();
 
-                    if (begin["0"].value) {
-                        element.begin = begin2["0"].value();
+                    if (begin2["0"].value) {
+                        element.begin = begin2["0"].value;
                     }
 
-                    if (end2["0"].value()){
-                    element.end = end2["0"].value();
-                }
+                    if (end2["0"].value) {
+                        element.end = end2["0"].value;
+
+                    } else {
+                        element.end = '';
+
+                    }
 
 
                 }
@@ -127,7 +141,32 @@ $(document).ready(function () {
             endHTML = "finish : " + task.end;
         }
 
-        code = task.titre;
+
+
+        switch (task.matter) {
+
+            case 'Low':
+                colorCard = ' bg-success';
+                break;
+
+            case 'Medium':
+                colorCard = ' bg-warning';
+                break;
+
+            case 'High':
+                colorCard = ' bg-danger';
+                break;
+
+            case '':
+                colorCard = ' bg-warning';
+                break;
+        }
+        code = '<div class="card text-white';
+        code += colorCard;
+        code += ' mb-3 edit" id="';
+        code += task.id;
+        code += '" style="max-width: 20rem;"><div class="card-header"><h4 class="card-title">'
+        code += task.titre;
         code += '</h4><i class="fas fa-pencil-alt icon"></i></div><div class="card-body"><p class="card-text">';
         code += task.description;
         code += '</p><div class="todo-date">start : ';
@@ -136,24 +175,7 @@ $(document).ready(function () {
         code += endHTML;
         code += '</div></div></div>';
 
-        switch (task.matter) {
 
-            case 'Low':
-                code = '<div class="card text-white bg-success mb-3 edit" id="' + task.id + '" style="max-width: 20rem;"><div class="card-header"><h4 class="card-title">' + code;
-                break;
-
-            case 'Medium':
-                code = '<div class="card text-white bg-warning mb-3 edit" id="' + task.id + '" style="max-width: 20rem;"><div class="card-header"><h4 class="card-title">' + code;
-                break;
-
-            case 'High':
-                code = '<div class="card text-white bg-danger mb-3 edit" id="' + task.id + '" style="max-width: 20rem;"><div class="card-header"><h4 class="card-title">' + code;
-                break;
-
-            case '':
-                code = '<div class="card text-white bg-warning mb-3 edit" id="' + task.id + '" style="max-width: 20rem;"><div class="card-header"><h4 class="card-title">' + code;
-                break;
-        }
         return code;
     }
 
@@ -162,11 +184,11 @@ $(document).ready(function () {
         var header = card.find($('.card-header'));
         var body = card.find($('.card-body'));
 
+        editMatter='';
+
         header.find($('.card-title')).replaceWith('<input type="text" placeholder="Todo Title..." class="todo-title large"><div class="invalid-edit">This task need a title !!</div>');
 
         header.find($('.icon').css('display', 'none'));
-
-
 
         body.find($('.card-text')).replaceWith('<input type="text" placeholder="Todo Description..." class="todo-description large"><div class="body-edition"><div>date Begining</div><input type="date" name="begin" class="todo-begin"><div>ending</div><input type="date" name="ending" class="todo-ending"><div>Matter</div><div class="border-black todo-matter"><button type="button" class="btn btn-success low">Low</button><button type="button" class="btn btn-warning medium">Medium</button><button type="button" class="btn btn-danger high">High</button><button type="button" class="btn btn-info btn-lg btn-block todo-save">Save</button></div>');
 
@@ -176,9 +198,7 @@ $(document).ready(function () {
 
     function contentEdited(event, card) {
 
-        var replaceTitre = '<h4 class="card-title">';
-        replaceTitre += event.titre;
-        replaceTitre += '</h4><i class="fas fa-pencil-alt icon"></i>';
+
 
         var endTask = '';
 
@@ -186,21 +206,44 @@ $(document).ready(function () {
             endTask = "finish : " + event.end;
         }
 
-        var replaceBody = '<p class="card-text">';
-        replaceBody += event.description;
-        code += '</p><div class="todo-date">start : ';
-        code += event.begin;
-        code += '</div><div class="todo-date">';
-        code += endTask;
-        code += '</div></div></div>';
+                switch (event.matter) {
+        
+                    case 'Low':
+                    colorCard = ' bg-success';
+                        break;
+        
+                    case 'Medium':
+                    colorCard = ' bg-warning';
+                        break;
+        
+                    case 'High':
+                    colorCard = ' bg-danger';
+                        break;
+        
+                    case '':
+                    colorCard = event.matter;
+                        break;
+                }
 
-        card.find($('.todo-title')).replaceWith(replaceTitre);
+        var replaceCard = '<div class="card text-white ';
+        replaceCard += colorCard;
+        replaceCard += ' mb-3 edit" id="';
+        replaceCard += event.id;
+        replaceCard += '" style="max-width: 20rem;"><div class="card-header"><h4 class="card-title">';
+        replaceCard += event.titre;
+        replaceCard += '</h4><i class="fas fa-pencil-alt icon"></i></div>';
+        replaceCard += '<div class="card-body"><p class="card-text">';
+        replaceCard += event.description;
+        replaceCard += '</p><div class="todo-date">start : ';
+        replaceCard += event.begin;
+        replaceCard += '</div><div class="todo-date">';
+        replaceCard += endTask;
+        replaceCard += '</div></div></div>';
 
-        card.find($('.todo-description')).replaceWith(replaceBody);
+        console.log(replaceCard);
+        console.log(card);
 
-        card.find($('.body-edition')).replaceWith('');
-
-
+        card.replaceWith(replaceCard);
     }
 
 });
